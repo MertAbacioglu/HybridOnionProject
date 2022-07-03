@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Save";
+}
+@model CategoryVM
+<h1>Save Category</h1>
+
+<div class="row">
+
+    <div class=col-md-6>
+
+        <form asp-action="Save" method="post" asp-controller="Categories">
+
+            <div class="form-group">
+                <label asp-for="@Model.Name"></label>
+                <input asp-for="@Model.Name" class="form-control" />
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+
+                <input type="submit" value="Add Product" class="btn-primary" />
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+
+</div>

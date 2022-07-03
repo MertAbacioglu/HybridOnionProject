@@ -1,0 +1,24 @@
+﻿<ul id="unorderedList">
+</ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+    $(function(){
+        alert("mere");
+         $.ajax({
+        type: "get",
+        url: "/products/GetListOfProduct",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            console.log(result);
+
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+    })
+</script>

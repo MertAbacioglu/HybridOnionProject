@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model CategoryListVM
+<a class="btn btn-primary" asp-controller="Categories" asp-action="Save">Add Category</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Options</td>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.CategoryVMList)
+        {
+            <tr>
+
+                <td>@item.Name</td>
+                <td>
+                    <a class="btn btn-warning" asp-controller="Categories" asp-action="Update" asp-route-id="@item.Id">Update</a>
+                    <a class="btn btn-danger" asp-controller="Categories" asp-action="Remove" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+
+
+</table>
+
+
