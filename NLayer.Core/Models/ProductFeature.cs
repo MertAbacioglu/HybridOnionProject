@@ -8,6 +8,6 @@
         public int Width { get; set; }
 
         //Relational Properties
-        public Product Product { get; set; }
+        public  Product Product { get; set; }
     }
 }

@@ -5,11 +5,12 @@ using NLayer.Core.Models;
 
 namespace NLayer.Repository.Configurations
 {
-    public class ProductFeatureConfiguration : IEntityTypeConfiguration<ProductFeature>
+    public class ProductFeatureConfiguration : BaseConfiguration<ProductFeature>
     {
-        public void Configure(EntityTypeBuilder<ProductFeature> builder)
+        public override void Configure(EntityTypeBuilder<ProductFeature> builder)
         {
-
+            base.Configure(builder);
+            builder.ToTable("UrunOzellikleri");
         }
     }
 }

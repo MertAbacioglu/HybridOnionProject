@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.API.Filters;
-using NLayer.Core;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
 using NLayer.Core.Services;
@@ -28,6 +27,12 @@ namespace NLayer.API.Controllers
         {
 
             return CreateActionResult(await _service.GetProductsWithCategory());
+        } 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProductsWitCategoryAndFeatures()
+        {
+
+            return CreateActionResult(await _service.GetProductsWithCategoryAndFeature());
         }
 
         [HttpGet]

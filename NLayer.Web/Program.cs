@@ -19,7 +19,7 @@ builder.Services.AddControllersWithViews()
     .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>())
     .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductVMValidator>())
     .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<CategoryVMValidator>());
-
+    
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<AppDbContext>(x =>
 {

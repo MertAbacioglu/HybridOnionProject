@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using NLayer.Core.ModelInterfaces;
+using System.Linq.Expressions;
 
 namespace NLayer.Core.Services
 {
-    public interface IService<T> where T : class
+    public interface IService<T> where T : class, IEntity
     {
 
         Task<T> GetByIdAsync(int id);

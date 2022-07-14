@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using NLayer.Core.ModelInterfaces;
+using System.Linq.Expressions;
 
 namespace NLayer.Core.Repositories
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class, IEntity
     {
         Task<T> GetByIdAsync(int id);
         IQueryable<T> GetAllAsIQueryable();

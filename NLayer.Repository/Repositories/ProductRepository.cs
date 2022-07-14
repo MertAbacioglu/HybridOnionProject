@@ -15,14 +15,13 @@ namespace NLayer.Repository.Repositories
         public async Task<List<Product>> GetProductsWitCategory()
         {
 
-            //return await _context.Products.Include(x => x.Category).ToListAsync();
-            return await _context.Products.Where(x => x.Status != DataStatus.Deleted).Include(x => x.Category).ToListAsync();
+            return await _context.Products.Where(x => x.Status != DataStatus.Deleted).Include(x => x.Category).Where(x => x.Category.Status != DataStatus.Deleted).ToListAsync();
         }
 
-        public async Task<List<Product>> GetProductsWitCategoryAndFeatures()
+        public async Task<List<Product>> GetProductsWithCategoryAndFeature()
         {
-            return await _context.Products.Where(x => x.Status != DataStatus.Deleted).Include(x => x.ProductFeature).Include(x => x.Category).ToListAsync();
-
+            
+            return await _context.Products.Where(x => x.Status != DataStatus.Deleted).Include(x => x.ProductFeature).Where(x => x.Status != DataStatus.Deleted).Include(x => x.Category).Where(x=>x.Category.Status!=DataStatus.Deleted).Include(x=>x.ProductFeature).Where(x => x.ProductFeature.Status != DataStatus.Deleted).ToListAsync();
         }
 
     }
