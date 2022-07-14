@@ -1,5 +1,7 @@
 ﻿
-
+$(function () {
+    alert('mert');
+})
 //ilgili ürünün özelliklerini getiren ve modal içine basan fonksiyon
 function GetProductFeature(id) {
     $.get("ProductFeatures/GetById/" + id)
