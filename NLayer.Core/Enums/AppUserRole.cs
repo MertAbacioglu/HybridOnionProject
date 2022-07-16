@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.Enums
 {
-    public enum DataStatus
+    public enum AppUserRole
     {
-        Inserted = 1,
-        Updated = 2,
-        Deleted = 3,
+        Admin = 1,
+        Member = 2
 
     }
 }

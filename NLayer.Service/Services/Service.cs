@@ -52,7 +52,7 @@ namespace NLayer.Service.Services
 
         public async Task<T> GetByIdAsync(int id)
         {
-            var hasProduct = await _repository.GetByIdAsync(id);
+            T hasProduct = await _repository.GetByIdAsync(id);
 
             if (hasProduct == null)
             {
@@ -64,7 +64,7 @@ namespace NLayer.Service.Services
         public async Task RemoveAsync(T entity)
         {
             entity.Status = DataStatus.Deleted;
-            _repository.Remove(entity);
+            _repository.Update(entity);
             await _unitOfWork.CommitAsync();
         }
 
@@ -92,8 +92,6 @@ namespace NLayer.Service.Services
         }
         public async Task UpdateAsync(T entity)
         {
-            entity.Status= DataStatus.Updated;
-            entity.UpdatedDate= DateTime.Now;
             _repository.Update(entity);
             await _unitOfWork.CommitAsync();
         }

@@ -12,10 +12,6 @@ namespace NLayer.Repository.Configurations
             base.Configure(builder);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
 
-
-
-
-
         }
     }
 }

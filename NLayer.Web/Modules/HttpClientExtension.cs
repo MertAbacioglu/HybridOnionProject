@@ -24,6 +24,12 @@ namespace NLayer.Web.Modules
                 opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
 
             });
+            builder.Services.AddHttpClient<AppUserApiService>(opt =>
+            {
+
+                opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+
+            });
             return builder;
 
         }

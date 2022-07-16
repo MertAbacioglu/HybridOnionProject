@@ -58,11 +58,89 @@ namespace NLayer.Repository.Seeds
 
             ProductFeatures = productFeatureFaker.Generate(30);
             #endregion
+
+            #region Fake AppUser Datas
+            //AppUsers.Add(new AppUser
+            //{
+            //    Id = 1,
+            //    UserName = "mert",
+            //    Password = "123",
+            //    CreatedDate = DateTime.Now,
+            //    Email = "mertabacioglu@gmail.com",
+            //    ActivationCode = Guid.NewGuid(),
+            //    Active = true,
+            //    Role = AppUserRole.Admin,
+            //    Status = DataStatus.Inserted,
+            //});
+            //AppUsers.Add(new AppUser
+            //{
+            //    Id = 2,
+            //    UserName = "ergun",
+            //    Password = "123",
+            //    CreatedDate = DateTime.Now,
+            //    Email = "ergunabacioglu@gmail.com",
+            //    ActivationCode = Guid.NewGuid(),
+            //    Active = true,
+            //    Role = AppUserRole.Member,
+            //    Status = DataStatus.Inserted,
+            //});
+
+            //AppUsers.Add(new AppUser
+            //{
+            //    Id = 3,
+            //    UserName = "adalet",
+            //    Password = "123",
+            //    CreatedDate = DateTime.Now,
+            //    Email = "adaletabacioglu@gmail.com",
+            //    ActivationCode = Guid.NewGuid(),
+            //    Active = false,
+            //    Role = AppUserRole.Member,
+            //    Status = DataStatus.Inserted,
+            //});
+            
+
+            #endregion
+
+            #region Fake AppUserProfile Datas
+            //AppUserProfiles.Add(new AppUserProfile
+            //{
+            //    Id = 1,
+            //    Status = DataStatus.Inserted,
+            //    Address = "Üsküdar",
+            //    CreatedDate = DateTime.Now,
+            //    FirstName = "mert",
+            //    LastName = "abacıoğlu"
+                
+
+            //});
+            //AppUserProfiles.Add(new AppUserProfile
+            //{
+            //    Id = 2,
+            //    Status = DataStatus.Inserted,
+            //    Address = "Üsküdar",
+            //    CreatedDate = DateTime.Now,
+            //    FirstName = "ergün",
+            //    LastName = "abacıoğlu"
+            //});
+            //AppUserProfiles.Add(new AppUserProfile
+            //{
+            //    Id = 3,
+            //    Status = DataStatus.Inserted,
+            //    Address = "Üsküdar",
+            //    CreatedDate = DateTime.Now,
+            //    FirstName = "adalet",
+            //    LastName = "abacıoğlu"
+
+
+            //});
+            #endregion
         }
 
         public static List<Category> Categories { get; set; }
         public static List<Product> Products { get; set; }
         public static List<ProductFeature> ProductFeatures { get; set; }
+        public static List<AppUser> AppUsers { get; set; } = new List<AppUser>();
+        public static List<AppUserProfile> AppUserProfiles { get; set; } = new List<AppUserProfile>();
 
     }
 }

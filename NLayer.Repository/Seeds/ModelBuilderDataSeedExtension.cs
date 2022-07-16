@@ -14,6 +14,8 @@ namespace NLayer.Repository.Seeds
             modelBuilder.Entity<Category>().HasData(FakeData.Categories);
             modelBuilder.Entity<Product>().HasData(FakeData.Products);
             modelBuilder.Entity<ProductFeature>().HasData(FakeData.ProductFeatures);
+            modelBuilder.Entity<AppUser>().HasData(FakeData.AppUsers);
+            modelBuilder.Entity<AppUserProfile>().HasData(FakeData.AppUserProfiles);
 
         }
     }

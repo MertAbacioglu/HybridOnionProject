@@ -7,9 +7,13 @@ using NLayer.Core.DTOs;
 using NLayer.Core.Services;
 using NLayer.Web.Services;
 using NLayer.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using NLayer.Core.Enums;
 
 namespace NLayer.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class ProductsController : Controller
     {
 
@@ -21,7 +25,6 @@ namespace NLayer.Web.Controllers
             _categoryApiService = categoryApiService;
             _productApiService = productApiService;
         }
-
         public async Task<IActionResult> Index()
         {
             return View(await _productApiService.GetProductsWithCategoryAsync());
@@ -81,8 +84,6 @@ namespace NLayer.Web.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
-
-
 
             return View(productAddVM);
 

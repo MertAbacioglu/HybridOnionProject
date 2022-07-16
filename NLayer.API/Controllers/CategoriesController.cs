@@ -60,7 +60,6 @@ namespace NLayer.API.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Save(CategoryDto categoryDto)
         {
             Category category = await _categoryService.AddAsync(_mapper.Map<Category>(categoryDto));
