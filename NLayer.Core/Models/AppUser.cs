@@ -11,14 +11,12 @@ namespace NLayer.Core.Models
     {
         public AppUser()
         {
-            Role = AppUserRole.Member;
             ActivationCode = Guid.NewGuid();
         }
 
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public AppUserRole Role { get; set; }
         public Guid ActivationCode { get; set; }
         public bool Active { get; set; }
 

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.DTOs
 {
-    public class ErrorViewModel
+    public class LanguageDto : BaseDto
     {
-        public List<string> Errors { get; set; } = new List<string>();
+        public string LanguageName { get; set; }
+        public int Level { get; set; }
     }
 }

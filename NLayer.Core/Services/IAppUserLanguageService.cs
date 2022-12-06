@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.Services
 {
-    public interface ICategoryService : IService<Category,CategoryDto>
+    public interface IAppUserLanguageService : IService<AppUserLanguage, AppUserLanguageDto>
     {
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using NLayer.Core.DTOs;
+using NLayer.Core.ResultModels;
+using NLayer.Core.Wrappers;
 using NLayer.Service.Exceptions;
 using System.Text.Json;
 
@@ -17,9 +19,9 @@ namespace NLayer.API.Middlewares
                 {
                     context.Response.ContentType = "application/json";
 
-                    var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    IExceptionHandlerFeature exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
 
-                    var statusCode = exceptionFeature.Error switch
+                    int statusCode = exceptionFeature.Error switch
                     {
                         ClientSideException => 400,
                         NotFoundExcepiton=> 404,
@@ -28,21 +30,12 @@ namespace NLayer.API.Middlewares
                     context.Response.StatusCode = statusCode;
 
 
-                    var response = CustomResponseDto<NoContentDto>.Fail(statusCode, exceptionFeature.Error.Message);
+                    Response<NoContent> response = Response<NoContent>.Fail(statusCode, exceptionFeature.Error.Message);
 
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(response));
 
                 });
-
-
-
-
-
-
-
-
-
 
             });
 

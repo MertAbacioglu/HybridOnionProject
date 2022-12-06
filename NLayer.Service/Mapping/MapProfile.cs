@@ -11,14 +11,15 @@ namespace NLayer.Service.Mapping
         {
             //Mappings from DTO to Entities and vice-versa
             CreateMap<Product, ProductDto>().ReverseMap();
-            CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<ProductFeature, ProductFeatureDto>().ReverseMap();
-            CreateMap<ProductUpdateDto, Product>();
-            CreateMap<Product, ProductWithCategoryDto>();
-            CreateMap<Category, CategoryWithProductsDto>();
-            CreateMap<Product, ProductWithCategoryAndFeatureDto>().ReverseMap();
-            CreateMap<AppUser, AppUserDto>().ReverseMap();
 
+            CreateMap<Category, CategoryDto>().ReverseMap();
+
+            CreateMap<Language, LanguageDto>().ReverseMap();
+            CreateMap<AppUserLanguage, AppUserLanguageDto>().ReverseMap();
+
+            CreateMap<Product, ProductsWithCategoryDto>()
+                .ForMember(dest =>dest.CategoryDto , act => act.MapFrom(src => src.Category))
+                .ReverseMap();
         }
     }
 }

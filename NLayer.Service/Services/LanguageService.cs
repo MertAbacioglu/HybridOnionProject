@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace NLayer.Service.Services
 {
-    public class CategoryService : BaseService<Category, CategoryDto>, ICategoryService
+    public class LanguageService : BaseService<Language, LanguageDto>, ILanguageServices
     {
-        public CategoryService(IGenericRepository<Category> genericRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(genericRepository, unitOfWork, mapper)
+        public LanguageService(IGenericRepository<Language> genericRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(genericRepository, unitOfWork, mapper)
         {
         }
     }

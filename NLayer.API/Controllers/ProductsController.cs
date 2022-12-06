@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using Bogus.DataSets;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.API.Filters;
 using NLayer.Core.DTOs;
 using NLayer.Core.Models;
 using NLayer.Core.Services;
+using NLayer.Core.Wrappers;
+using NLayer.Service.Exceptions;
+using NLayer.Service.Services;
 
 namespace NLayer.API.Controllers
 {
@@ -11,82 +15,71 @@ namespace NLayer.API.Controllers
 
     public class ProductsController : CustomBaseController
     {
-        private readonly IMapper _mapper;
-        private readonly IProductService _service;
+        private readonly IProductService _productService;
+        private readonly IAppUserLanguageService _appUserLanguageService;
 
-        public ProductsController(IMapper mapper, IProductService productService)
+        public ProductsController(IProductService productService, IMapper mapper, IAppUserLanguageService appUserLanguageService)
         {
-          
-            _mapper = mapper;
-            _service = productService;
+            _productService = productService;
+            _appUserLanguageService = appUserLanguageService;
         }
 
-
-        [HttpGet("[action]")]
-        public async Task<IActionResult>  GetProductsWithCategory()
-        {
-
-            return CreateActionResult(await _service.GetProductsWithCategory());
-        } 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetProductsWitCategoryAndFeatures()
-        {
-
-            return CreateActionResult(await _service.GetProductsWithCategoryAndFeature());
-        }
 
         [HttpGet]
-        public  IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            IQueryable<Product> products =  _service.GetAllNonDeletedAsync();
-            List<ProductDto> productsDtos = _mapper.Map<List<ProductDto>>(products.ToList());
-            return CreateActionResult(CustomResponseDto<List<ProductDto>>.Success(200, productsDtos));
+            return CreateActionResult(await _productService.GetActives());
         }
 
-       
-        [ServiceFilter(typeof(NotFoundFilter<Product>))]
+        [ServiceFilter(typeof(NotFoundFilter<Product,ProductDto>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-
-            
-            var product = await _service.GetByIdAsync(id);
-            var productsDto = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(200, productsDto));
+            return CreateActionResult(await _productService.FindAsync(id));
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Save(ProductDto productDto)
         {
-            Product product = await _service.AddAsync(_mapper.Map<Product>(productDto));
-            ProductDto productDtoUpdated = _mapper.Map<ProductDto>(product);
-            return CreateActionResult(CustomResponseDto<ProductDto>.Success(201, productDtoUpdated));
+            return CreateActionResult(await _productService.AddAsync(productDto));
         }
-
 
         [HttpPut]
-        public async Task<IActionResult> Update(ProductUpdateDto productDto)
+        public async Task<IActionResult> Update(ProductDto productDto)
         {
-             await _service.UpdateAsync(_mapper.Map<Product>(productDto));
-          
-            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+            return CreateActionResult(await _productService.UpdateAsync(productDto));
+
         }
-      
-        
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-            var product = await _service.GetByIdAsync(id);
-
-
-         
-
-            await _service.RemoveAsync(product);
-          
-            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+            //ProductDto productDto = (await _productService.FindAsync(id)).Data;
+            return CreateActionResult(await _productService.RemoveAsync(id));
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProductsWithCategory()
+        {
+
+            return CreateActionResult(await _productService.GetProductsWithCategory());
+        }
+
+        //[HttpGet("[action]")]
+        //public async Task<IActionResult> GetProductsWitCategoryAndFeatures()
+        //{
+
+        //    return CreateActionResult(await _productService.GetProductsWithCategoryAndFeature());
+        //}
+
+
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAppUserLanguages()
+        {
+            return CreateActionResult(await _appUserLanguageService.GetActives());
+        }
     }
 }

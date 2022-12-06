@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayer.Core.DTOs
+namespace NLayer.Core.ResultModels
 {
-    public class AppUserDto :BaseDto
+    public class NoContent
     {
     }
 }

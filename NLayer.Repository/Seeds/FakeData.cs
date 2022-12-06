@@ -59,47 +59,21 @@ namespace NLayer.Repository.Seeds
             ProductFeatures = productFeatureFaker.Generate(30);
             #endregion
 
-            #region Fake AppUser Datas
-            //AppUsers.Add(new AppUser
-            //{
-            //    Id = 1,
-            //    UserName = "mert",
-            //    Password = "123",
-            //    CreatedDate = DateTime.Now,
-            //    Email = "mertabacioglu@gmail.com",
-            //    ActivationCode = Guid.NewGuid(),
-            //    Active = true,
-            //    Role = AppUserRole.Admin,
-            //    Status = DataStatus.Inserted,
-            //});
-            //AppUsers.Add(new AppUser
-            //{
-            //    Id = 2,
-            //    UserName = "ergun",
-            //    Password = "123",
-            //    CreatedDate = DateTime.Now,
-            //    Email = "ergunabacioglu@gmail.com",
-            //    ActivationCode = Guid.NewGuid(),
-            //    Active = true,
-            //    Role = AppUserRole.Member,
-            //    Status = DataStatus.Inserted,
-            //});
+            //#region Fake AppUser Datas
+            //int appUserId = 1;
+            //Faker<AppUser> appUserFaker = new Faker<AppUser>()
+            //.RuleFor(u => u.UserName, x => x.Internet.UserName())
+            //.StrictMode(true)
+            //.RuleFor(x => x.Id, x => appUserId++)
+            //.RuleFor(x => x.CreatedDate, x => x.Date.Between(new DateTime(2021, 3, 14), DateTime.Now))
+            //.RuleFor(x => x.DeletedDate, x => null)
+            //.RuleFor(x => x.UpdatedDate, x => null)
+            //.RuleFor(x => x.Status, x => DataStatus.Inserted);
 
-            //AppUsers.Add(new AppUser
-            //{
-            //    Id = 3,
-            //    UserName = "adalet",
-            //    Password = "123",
-            //    CreatedDate = DateTime.Now,
-            //    Email = "adaletabacioglu@gmail.com",
-            //    ActivationCode = Guid.NewGuid(),
-            //    Active = false,
-            //    Role = AppUserRole.Member,
-            //    Status = DataStatus.Inserted,
-            //});
-            
+            //AppUsers = appUserFaker.Generate(10);
 
-            #endregion
+
+            //#endregion
 
             #region Fake AppUserProfile Datas
             //AppUserProfiles.Add(new AppUserProfile
@@ -110,7 +84,7 @@ namespace NLayer.Repository.Seeds
             //    CreatedDate = DateTime.Now,
             //    FirstName = "mert",
             //    LastName = "abacıoğlu"
-                
+
 
             //});
             //AppUserProfiles.Add(new AppUserProfile
@@ -134,13 +108,42 @@ namespace NLayer.Repository.Seeds
 
             //});
             #endregion
+
         }
+        public static Language lang1 = new Language
+        {
+            CreatedDate = DateTime.Now,
+            LanguageName = "Türkçe",
+            Level = 1,
+            Status = DataStatus.Inserted,
+            Id= 1,
+
+        };
+        public static Language lang2 = new Language
+        {
+            CreatedDate = DateTime.Now,
+            LanguageName = "İngilizce",
+            Level = 1,
+            Status = DataStatus.Inserted,
+            Id = 2,
+
+        };
+        public static Language lang3 = new Language
+        {
+            CreatedDate = DateTime.Now,
+            LanguageName = "Almanca",
+            Level = 1,
+            Status = DataStatus.Inserted,
+            Id = 3,
+
+        };
 
         public static List<Category> Categories { get; set; }
         public static List<Product> Products { get; set; }
         public static List<ProductFeature> ProductFeatures { get; set; }
         public static List<AppUser> AppUsers { get; set; } = new List<AppUser>();
         public static List<AppUserProfile> AppUserProfiles { get; set; } = new List<AppUserProfile>();
+        public static List<Language> Languages { get; set; } = new List<Language>() { lang1,lang2,lang3};
 
     }
 }

@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.Services
 {
-    public interface IApuserService : IService<AppUser>
+    public interface ILanguageServices : IService<Language,LanguageDto>
     {
-        Task<CustomResponseDto<AppUserDto>> CheckAppUser(AppUser appUser);
-
     }
 }

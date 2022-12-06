@@ -7,12 +7,12 @@ using NLayer.Core.Services;
 
 namespace NLayer.Web
 {
-    public class NotFoundFilter<T>:IAsyncActionFilter where T : BaseEntity
+    public class NotFoundFilter<T,D>:IAsyncActionFilter where T : BaseEntity where D : BaseDto
     {
 
-        private readonly IService<T> _service;
+        private readonly IService<T,D> _service;
 
-        public NotFoundFilter(IService<T> service)
+        public NotFoundFilter(IService<T,D> service)
         {
             _service = service;
         }

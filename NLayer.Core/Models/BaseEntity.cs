@@ -5,11 +5,10 @@ namespace NLayer.Core.Models
 {
     public abstract class BaseEntity: IEntity
     {
-        //public BaseEntity()
-        //{
-        //    CreatedDate = DateTime.Now;
-        //    Status=DataStatus.Inserted;
-        //}
+        public BaseEntity()
+        {
+            Status = DataStatus.Inserted;
+        }
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
