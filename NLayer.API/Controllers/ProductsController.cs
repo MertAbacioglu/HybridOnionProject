@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using Bogus.DataSets;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.API.Filters;
 using NLayer.Core.DTOs;
+using NLayer.Core.Enums;
 using NLayer.Core.Models;
+using NLayer.Core.Repositories;
 using NLayer.Core.Services;
-using NLayer.Core.Wrappers;
-using NLayer.Service.Exceptions;
-using NLayer.Service.Services;
 
 namespace NLayer.API.Controllers
 {
@@ -16,26 +14,29 @@ namespace NLayer.API.Controllers
     public class ProductsController : CustomBaseController
     {
         private readonly IProductService _productService;
-        private readonly IAppUserLanguageService _appUserLanguageService;
+        private readonly IProductRepository _productRepository;
+        private readonly IAppUserLanguagesService _appUserLanguageService;
 
-        public ProductsController(IProductService productService, IMapper mapper, IAppUserLanguageService appUserLanguageService)
+        public ProductsController(IProductService productService, IMapper mapper, IAppUserLanguagesService appUserLanguageService, IProductRepository productRepository)
         {
             _productService = productService;
             _appUserLanguageService = appUserLanguageService;
+            _productRepository = productRepository;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return CreateActionResult(await _productService.GetActives());
+            return CreateActionResult(await _appUserLanguageService.GetActives());
         }
 
-        [ServiceFilter(typeof(NotFoundFilter<Product,ProductDto>))]
+        [ServiceFilter(typeof(NotFoundFilter<Product, ProductDto>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return CreateActionResult(await _productService.FindAsync(id));
+
+            return null;
         }
 
         [HttpPost]
@@ -52,12 +53,12 @@ namespace NLayer.API.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remove(int id)
-        {
-            //ProductDto productDto = (await _productService.FindAsync(id)).Data;
-            return CreateActionResult(await _productService.RemoveAsync(id));
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Remove(int id)
+        //{
+        //    //ProductDto productDto = (await _productService.FindAsync(id)).Data;
+        //    return CreateActionResult(await _productService.RemoveAsync(id));
+        //}
 
 
         [HttpGet("[action]")]
@@ -79,7 +80,55 @@ namespace NLayer.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAppUserLanguages()
         {
-            return CreateActionResult(await _appUserLanguageService.GetActives());
+
+            #region Repository Ile Guncelleme Denemesi
+            //Product productRep = _productRepository.FindAsync(1).Result;
+            //productRep.Name = "REP UPDATED";
+            //_productRepository.Update(productRep);
+            #endregion
+
+            #region Servis ile guncelleme denemesi
+            //ProductDto toBeUpdated = (await _productService.FindAsync(1)).Data;
+            //toBeUpdated.Name = "updated product name fff";
+
+            //return CreateActionResult(await _productService.UpdateAsync(toBeUpdated));
+            #endregion
+
+            #region many-to many update deneme
+            //AppUserLanguageDto a = new AppUserLanguageDto
+            //{
+            //    AppUserID = 1,
+            //    LanguageID = 2,
+            //    CreatedDate = DateTime.Now,
+            //    GivenBy = $"yeni level",
+            //    Status = DataStatus.Inserted
+            //};
+            //await _appUserLanguageService.AddAsync(a);
+            List<AppUserLanguageDto> existedDtos = (await _appUserLanguageService.Where(x => x.AppUserID == 9, false)).Data.ToList();
+
+            int appUserId = existedDtos[0].AppUserID;
+
+
+            List<int> eskiIntler = existedDtos.Select(x => x.LanguageID).ToList();
+
+
+            List<int> newLanguageIds = new List<int> { 3, 4, 5 };
+
+            await _appUserLanguageService.DestroyRangeAsync(existedDtos);
+
+            List<AppUserLanguageDto> dtos = new List<AppUserLanguageDto>();
+
+            dtos.AddRange(newLanguageIds.Select(x => new AppUserLanguageDto
+            {
+                AppUserID = appUserId,
+                LanguageID = x,
+                GivenBy = $"yeni level",
+                Status = DataStatus.Inserted
+            }));
+
+            return CreateActionResult(await _appUserLanguageService.AddRangeAsync(dtos));
+
+            #endregion
         }
     }
 }

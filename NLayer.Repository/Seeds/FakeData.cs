@@ -1,15 +1,21 @@
 ﻿using Bogus;
+using Bogus.DataSets;
 using NLayer.Core.Enums;
 using NLayer.Core.Models;
 
 namespace NLayer.Repository.Seeds
 {
+    /// <summary>
+    /// This class includes methods that use Bogus Library to create fake datas.
+    /// </summary>
     public static class FakeData
     {
         static FakeData()
         {
             Init();
         }
+
+
         public static void Init()
         {
             #region Fake Category Datas
@@ -40,6 +46,7 @@ namespace NLayer.Repository.Seeds
             .RuleFor(x => x.Status, x => DataStatus.Inserted)
             .RuleFor(x => x.Stock, x => x.Random.Int(1, 200))
             .RuleFor(d => d.CategoryId, f => f.PickRandom(Categories).Id);
+
             Products = productFaker.Generate(30);
             #endregion
 
@@ -59,91 +66,77 @@ namespace NLayer.Repository.Seeds
             ProductFeatures = productFeatureFaker.Generate(30);
             #endregion
 
-            //#region Fake AppUser Datas
-            //int appUserId = 1;
-            //Faker<AppUser> appUserFaker = new Faker<AppUser>()
-            //.RuleFor(u => u.UserName, x => x.Internet.UserName())
-            //.StrictMode(true)
-            //.RuleFor(x => x.Id, x => appUserId++)
-            //.RuleFor(x => x.CreatedDate, x => x.Date.Between(new DateTime(2021, 3, 14), DateTime.Now))
-            //.RuleFor(x => x.DeletedDate, x => null)
-            //.RuleFor(x => x.UpdatedDate, x => null)
-            //.RuleFor(x => x.Status, x => DataStatus.Inserted);
+            #region Fake AppUser Datas
+            int appUserId = 1;
+            Faker<AppUser> appUserFaker = new Faker<AppUser>()
+            .RuleFor(u => u.UserName, x => x.Internet.UserName())
+            .StrictMode(false)
+            .RuleFor(x => x.Id, x => appUserId++)
+            .RuleFor(x => x.CreatedDate, x => x.Date.Between(new DateTime(2021, 3, 14), DateTime.Now))
+            .RuleFor(x => x.DeletedDate, x => null)
+            .RuleFor(x => x.UpdatedDate, x => null)
+            .RuleFor(x => x.Status, x => DataStatus.Inserted);
 
-            //AppUsers = appUserFaker.Generate(10);
+            AppUsers = appUserFaker.Generate(10);
 
-
-            //#endregion
-
-            #region Fake AppUserProfile Datas
-            //AppUserProfiles.Add(new AppUserProfile
-            //{
-            //    Id = 1,
-            //    Status = DataStatus.Inserted,
-            //    Address = "Üsküdar",
-            //    CreatedDate = DateTime.Now,
-            //    FirstName = "mert",
-            //    LastName = "abacıoğlu"
-
-
-            //});
-            //AppUserProfiles.Add(new AppUserProfile
-            //{
-            //    Id = 2,
-            //    Status = DataStatus.Inserted,
-            //    Address = "Üsküdar",
-            //    CreatedDate = DateTime.Now,
-            //    FirstName = "ergün",
-            //    LastName = "abacıoğlu"
-            //});
-            //AppUserProfiles.Add(new AppUserProfile
-            //{
-            //    Id = 3,
-            //    Status = DataStatus.Inserted,
-            //    Address = "Üsküdar",
-            //    CreatedDate = DateTime.Now,
-            //    FirstName = "adalet",
-            //    LastName = "abacıoğlu"
-
-
-            //});
             #endregion
 
+            #region Fake AppUserProfile Datas
+            int appUserProfileId = 1;
+            Faker<AppUserProfile> appUserProfileFaker = new Faker<AppUserProfile>()
+            .StrictMode(false)
+            .RuleFor(u => u.FirstName, x => x.Person.FirstName)
+            .RuleFor(u => u.LastName, x => x.Person.LastName)
+            .RuleFor(x => x.Id, x => appUserProfileId++)
+            .RuleFor(x => x.CreatedDate, x => x.Date.Between(new DateTime(2021, 3, 14), DateTime.Now))
+            .RuleFor(x => x.DeletedDate, x => null)
+            .RuleFor(x => x.UpdatedDate, x => null)
+            .RuleFor(x => x.Status, x => DataStatus.Inserted);
+
+            AppUserProfiles = appUserProfileFaker.Generate(10);
+            #endregion
+
+            #region Fake(Custom) Language Datas
+            Languages = new List<Language>()
+            {
+                new Language { Id = 1,CreatedDate = DateTime.Now,LanguageName = "Turkish",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 2,CreatedDate = DateTime.Now,LanguageName = "German",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 3,CreatedDate = DateTime.Now,LanguageName = "English",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 4,CreatedDate = DateTime.Now,LanguageName = "Korean",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 5,CreatedDate = DateTime.Now,LanguageName = "Finnish",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 6,CreatedDate = DateTime.Now,LanguageName = "French",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 7,CreatedDate = DateTime.Now,LanguageName = "Czech",Level = 1,Status = DataStatus.Inserted},
+                new Language { Id = 8,CreatedDate = DateTime.Now,LanguageName = "Spanish ",Level = 1,Status = DataStatus.Inserted}
+            };
+            #endregion
+
+            #region Fake AppUserLanguage Datas
+            for (int i = 1; i <= AppUsers.Count; i++)
+            {
+                for (int j = 1; j <= Languages.Count; j++)
+                {
+                    AppUserLanguage appUserLanguage = new AppUserLanguage
+                    {
+                        AppUserID = i, LanguageID = j, GivenBy = new Internet().UserName(), CreatedDate = DateTime.Now, Status = DataStatus.Inserted
+                    };
+
+                    AppUsersLanguages.Add(appUserLanguage);
+                }
+
+
+            }
+            AppUsersLanguages= AppUsersLanguages.GroupBy(x => new { x.AppUserID, x.LanguageID }).Select(x => x.FirstOrDefault()).ToList();//remove duplicate, just a simple BL to continue
+            #endregion
         }
-        public static Language lang1 = new Language
-        {
-            CreatedDate = DateTime.Now,
-            LanguageName = "Türkçe",
-            Level = 1,
-            Status = DataStatus.Inserted,
-            Id= 1,
-
-        };
-        public static Language lang2 = new Language
-        {
-            CreatedDate = DateTime.Now,
-            LanguageName = "İngilizce",
-            Level = 1,
-            Status = DataStatus.Inserted,
-            Id = 2,
-
-        };
-        public static Language lang3 = new Language
-        {
-            CreatedDate = DateTime.Now,
-            LanguageName = "Almanca",
-            Level = 1,
-            Status = DataStatus.Inserted,
-            Id = 3,
-
-        };
 
         public static List<Category> Categories { get; set; }
         public static List<Product> Products { get; set; }
         public static List<ProductFeature> ProductFeatures { get; set; }
-        public static List<AppUser> AppUsers { get; set; } = new List<AppUser>();
-        public static List<AppUserProfile> AppUserProfiles { get; set; } = new List<AppUserProfile>();
-        public static List<Language> Languages { get; set; } = new List<Language>() { lang1,lang2,lang3};
+        public static List<AppUser> AppUsers { get; set; }
+        public static List<AppUserProfile> AppUserProfiles { get; set; }
+        public static List<Language> Languages { get; set; }
+        public static List<AppUserLanguage> AppUsersLanguages { get; set; } = new List<AppUserLanguage>();
 
     }
 }
+

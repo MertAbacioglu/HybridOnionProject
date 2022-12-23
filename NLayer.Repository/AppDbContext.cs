@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using NLayer.Core;
-using NLayer.Core.Enums;
 using NLayer.Core.Models;
 using NLayer.Repository.Seeds;
 using System.Reflection;

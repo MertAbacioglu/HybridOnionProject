@@ -1,33 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using NLayer.Core.Enums;
+using NLayer.Core.ModelInterfaces;
 using NLayer.Core.Models;
 using NLayer.Core.Repositories;
+using System.Linq;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NLayer.Repository.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         protected readonly AppDbContext _context;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(AppDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
         }
-
-        public async Task AddAsync(T entity)
+        
+        public void Add(T entity)
         {
-
-            await _dbSet.AddAsync(entity);
-
-
+            _dbSet.Add(entity);
+           
         }
 
-        public async Task AddRangeAsync(IEnumerable<T> entities)
+        public void AddRange(IEnumerable<T> entities)
         {
-            await _dbSet.AddRangeAsync(entities);
+            foreach (T entity in entities)
+                _dbSet.Add(entity);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
@@ -35,93 +39,87 @@ namespace NLayer.Repository.Repositories
             return await _dbSet.AnyAsync(expression);
         }
 
-        public IQueryable<T> GetAllAsIQueryable()
-        {
-            return _dbSet.AsNoTracking().AsQueryable();
-
-        }
-        public IQueryable<T> GetActivesAsIQueryable()
-        {
-            return GetAllAsIQueryable().Where(x => x.Status != DataStatus.Deleted);
-        }
-
-        public IQueryable<T> GetPassivesAsIQueryable()
-        {
-            return GetAllAsIQueryable().Where(x => x.Status == DataStatus.Deleted);
-        }
-
-        public IQueryable<T> GetModifiedsAsIQueryable()
-        {
-            return GetAllAsIQueryable().Where(x => x.Status == DataStatus.Updated);
-        }
-        
         public void Remove(T entity)
         {
-            entity.Status = DataStatus.Deleted;
+            if (_context.Entry(entity).State == EntityState.Detached)
+            {
+                 entity.DeletedDate = DateTime.Now;
+                _context.Attach(entity);
+            }
             _dbSet.Update(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            foreach (T entity in entities)
+                if (_context.Entry(entity).State == EntityState.Detached)
+                {
+                    entity.DeletedDate = DateTime.Now;
+                    _context.Attach(entity);
+                }          
+            _dbSet.UpdateRange(entities);
+        }
+
+        public async Task<T> FindAsync(params object[] values)
+        {
+            return await _dbSet.FindAsync(values);
+        }
+        
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp)
+        {
+            return await GetAllAsIQueryable().FirstOrDefaultAsync(exp);
+        }
+
+        
+        public async Task<IEnumerable<T>> Where(Expression<Func<T, bool>> expression)
+        {
+            return  await _dbSet.Where(expression).ToListAsync();
         }
         
         public void Destroy(T entity)
         {
-            _dbSet.Remove(entity);
-
+            throw new NotImplementedException();
         }
-        
+
         public void DestroyRange(IEnumerable<T> entities)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public async Task<object> Select(Expression<Func<T, object>> exp)
         {
-            foreach (T item in entities)
-            {
-                item.Status = DataStatus.Deleted;
-            }
-            _dbSet.RemoveRange(entities);
+            return await GetAllAsIQueryable().Select(exp).ToListAsync();
         }
 
         public void Update(T entity)
         {
-            entity.Status = DataStatus.Updated;
+            if (_context.Entry(entity).State == EntityState.Detached)
+            {
+                 entity.UpdatedDate = DateTime.Now;
+                _context.Attach(entity);
+            }
             _dbSet.Update(entity);
         }
-        
+
         public void UpdateRange(IEnumerable<T> entities)
         {
-            foreach (T item in entities)
-            {
-                item.Status = DataStatus.Updated;
-            }
+            foreach (T entity in entities)
+                if (_context.Entry(entity).State == EntityState.Detached)
+                {
+                    entity.UpdatedDate = DateTime.Now;
+                    _context.Attach(entity);
+                }
             _dbSet.UpdateRange(entities);
         }
-        
-        public IQueryable<T> Where(Expression<Func<T, bool>> expression)
+
+        public async Task<IEnumerable<T>> GetDeletedAsync()
         {
-            return _dbSet.Where(expression);
+            return await GetAllAsIQueryable().Where(x => x.Status == DataStatus.Deleted).ToListAsync();
         }
 
-        public async Task<T> FindAsync(params object[] values)
+        public IQueryable<T> GetAllAsIQueryable()
         {
-            T entity = await _dbSet.FindAsync(values);
-            //_dbSet.Entry(entity).State = EntityState.Detached; //toDo : alternative
-            return entity;            
+            return _dbSet.AsNoTracking();
         }
-
-        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> exp)
-        {
-            return await _dbSet.FirstOrDefaultAsync(exp);
-        }
-
-        public async Task<object> Select(Expression<Func<T, object>> exp)
-        {
-            return await _dbSet.Select(exp).ToListAsync();
-        }
-
-        public IQueryable<X> SelectViaClass<X>(Expression<Func<T, X>> exp)
-        {
-            return _dbSet.Select(exp);
-        }
-
     }
 }

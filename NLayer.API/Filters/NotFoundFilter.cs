@@ -8,7 +8,7 @@ using NLayer.Core.Wrappers;
 
 namespace NLayer.API.Filters
 {
-    public class NotFoundFilter<T1,T2> :IAsyncActionFilter where T1 : BaseEntity where T2 : BaseDto
+    public class NotFoundFilter<T1,T2> :IAsyncActionFilter where T1 : BaseEntity where T2 : IBaseDto
     {
 
         private readonly IService<T1,T2> _service;

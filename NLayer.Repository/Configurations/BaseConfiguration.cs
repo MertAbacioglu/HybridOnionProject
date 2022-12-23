@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NLayer.Repository.Configurations
 {
-    public class BaseConfiguration<T> : IEntityTypeConfiguration<T> where T : class,IEntity
+    public abstract class BaseConfiguration<T> : IEntityTypeConfiguration<T> where T : class,IEntity
     {
         public virtual void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<T> builder)
         {

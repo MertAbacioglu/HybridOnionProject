@@ -1,12 +1,13 @@
-﻿using NLayer.Core.Enums;
-using NLayer.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NLayer.Core.DTOs
 {
-    public class ProductDto : IBaseDto
+    public class ProductCreateDto
     {
-        public int ID { get; set; }
-        public DataStatus Status { get; set; }
         public string Name { get; set; }
 
         public int Stock { get; set; }

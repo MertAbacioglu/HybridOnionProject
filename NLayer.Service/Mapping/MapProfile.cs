@@ -15,10 +15,10 @@ namespace NLayer.Service.Mapping
             CreateMap<Category, CategoryDto>().ReverseMap();
 
             CreateMap<Language, LanguageDto>().ReverseMap();
-            CreateMap<AppUserLanguage, AppUserLanguageDto>().ReverseMap();
+            CreateMap<AppUserLanguage, AppUserLanguageDto>().ForMember(x => x.Id, y => y.Ignore()).ReverseMap();
 
             CreateMap<Product, ProductsWithCategoryDto>()
-                .ForMember(dest =>dest.CategoryDto , act => act.MapFrom(src => src.Category))
+                .ForMember(dest => dest.CategoryDto, act => act.MapFrom(src => src.Category))
                 .ReverseMap();
         }
     }

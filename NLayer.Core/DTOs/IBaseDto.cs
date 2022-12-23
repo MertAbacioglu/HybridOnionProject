@@ -1,14 +1,15 @@
 ﻿using NLayer.Core.Enums;
-using NLayer.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayer.Core.Repositories
+namespace NLayer.Core.DTOs
 {
-    public interface IAppUserLanguageRepository : IGenericRepository<AppUserLanguage>
+    public interface IBaseDto
     {
+        public int ID { get; set; }
+        public DataStatus Status { get; set; }
     }
 }

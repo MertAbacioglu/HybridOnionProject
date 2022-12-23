@@ -1,7 +1,4 @@
-﻿using Bogus;
-using Bogus.DataSets;
-using Microsoft.EntityFrameworkCore;
-using NLayer.Core.Enums;
+﻿using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Models;
 
 namespace NLayer.Repository.Seeds
@@ -17,7 +14,7 @@ namespace NLayer.Repository.Seeds
             modelBuilder.Entity<AppUser>().HasData(FakeData.AppUsers);
             modelBuilder.Entity<AppUserProfile>().HasData(FakeData.AppUserProfiles);
             modelBuilder.Entity<Language>().HasData(FakeData.Languages);
-
+            modelBuilder.Entity<AppUserLanguage>().HasData(FakeData.AppUsersLanguages);
         }
     }
 }

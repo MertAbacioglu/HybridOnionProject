@@ -1,5 +1,6 @@
 ﻿using NLayer.Core.DTOs;
 using NLayer.Core.Models;
+using NLayer.Core.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace NLayer.Core.Services
 {
-    public interface IAppUserLanguageService : IService<AppUserLanguage, AppUserLanguageDto>
+    public interface IAppUserLanguagesService : IService<AppUserLanguage, AppUserLanguageDto>
     {
+        public Task<Response<AppUserLanguageDto>> FindAsync(int languageId, int userId, bool tracking);
     }
 }
